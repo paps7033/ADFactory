@@ -1,0 +1,16 @@
+{
+	"name": "TgtEmp",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SNOW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "public",
+			"table": "tgtemp1"
+		}
+	}
+}

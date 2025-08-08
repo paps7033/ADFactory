@@ -1,0 +1,49 @@
+{
+	"name": "emp",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SrcEmp",
+						"type": "DatasetReference"
+					},
+					"name": "EmpSrc"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TgtEmp",
+						"type": "DatasetReference"
+					},
+					"name": "TgtEmp"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          EMPID as decimal(38,0),",
+				"          ENAME as string,",
+				"          SAL as decimal(38,0),",
+				"          LOCATION as string,",
+				"          DEPTNO as decimal(38,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> EmpSrc",
+				"EmpSrc sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true) ~> TgtEmp"
+			]
+		}
+	}
+}
