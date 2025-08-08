@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "TgtEmp",
+						"referenceName": "SnowflakeTable1",
 						"type": "DatasetReference"
 					},
 					"name": "TgtEmp"
@@ -42,7 +42,13 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> TgtEmp"
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          EMPID,",
+				"          ENAME,",
+				"          LOCATION,",
+				"          DEPTNO",
+				"     )) ~> TgtEmp"
 			]
 		}
 	}
