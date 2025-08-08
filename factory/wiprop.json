@@ -1,0 +1,9 @@
+{
+	"name": "wiprop",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "903cbdf0-96e3-465a-9272-f9b97b79dc03",
+		"tenantId": "7540734b-e567-46c3-9ad3-ec9fb9e50140"
+	}
+}
