@@ -14,6 +14,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "SnowflakeTable1",
+						"type": "DatasetReference"
+					},
 					"name": "TgtEmp"
 				}
 			],
@@ -31,6 +35,11 @@
 				"     format: 'table') ~> EmpSrc",
 				"EmpSrc sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
@@ -38,8 +47,7 @@
 				"          ENAME,",
 				"          LOCATION,",
 				"          DEPTNO",
-				"     ),",
-				"     format: 'table') ~> TgtEmp"
+				"     )) ~> TgtEmp"
 			]
 		}
 	}
