@@ -215,6 +215,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SNOW",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [],
+				"typeProperties": {
+					"schema": "ASSIGNMENTS",
+					"table": "APPLE"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SNOW')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/TestingNoTgt')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -233,7 +254,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "EmpTgt1",
+								"referenceName": "SnowflakeTable2",
 								"type": "DatasetReference"
 							},
 							"name": "Emptgt1"
@@ -261,20 +282,13 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     stageInsert: true,",
-						"     mapColumn(",
-						"          EMPID,",
-						"          ENAME,",
-						"          SAL,",
-						"          LOCATION,",
-						"          DEPTNO",
-						"     )) ~> Emptgt1"
+						"     stageInsert: true) ~> Emptgt1"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/EmpSrc1')]",
-				"[concat(variables('factoryId'), '/datasets/EmpTgt1')]"
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable2')]"
 			]
 		},
 		{
@@ -363,7 +377,8 @@
 								"datasetParameters": {
 									"EmpSrc1": {},
 									"Emptgt1": {}
-								}
+								},
+								"linkedServiceParameters": {}
 							},
 							"staging": {},
 							"compute": {
