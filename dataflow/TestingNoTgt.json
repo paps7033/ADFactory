@@ -15,13 +15,17 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable2",
+						"referenceName": "SurgtKeyTransf",
 						"type": "DatasetReference"
 					},
-					"name": "Emptgt1"
+					"name": "SurgtKeyTransform"
 				}
 			],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          EMPID as decimal(38,0),",
@@ -33,7 +37,10 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> EmpSrc1",
-				"EmpSrc1 sink(allowSchemaDrift: true,",
+				"EmpSrc1 keyGenerate(output(emp_key as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -43,7 +50,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> Emptgt1"
+				"     stageInsert: true) ~> SurgtKeyTransform"
 			]
 		}
 	}

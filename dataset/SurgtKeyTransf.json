@@ -1,0 +1,16 @@
+{
+	"name": "SurgtKeyTransf",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SNOW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "ASSIGNMENTS",
+			"table": "Surgt_Key_Transform"
+		}
+	}
+}
