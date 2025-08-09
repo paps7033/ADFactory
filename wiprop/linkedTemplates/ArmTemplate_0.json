@@ -236,6 +236,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SurgtKeyTransf')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SNOW",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [],
+				"typeProperties": {
+					"schema": "ASSIGNMENTS",
+					"table": "Surgt_Key_Transform"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SNOW')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/TestingNoTgt')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -254,13 +275,17 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "SnowflakeTable2",
+								"referenceName": "SurgtKeyTransf",
 								"type": "DatasetReference"
 							},
-							"name": "Emptgt1"
+							"name": "SurgtKeyTransform"
 						}
 					],
-					"transformations": [],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						}
+					],
 					"scriptLines": [
 						"source(output(",
 						"          EMPID as decimal(38,0),",
@@ -272,7 +297,10 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'table') ~> EmpSrc1",
-						"EmpSrc1 sink(allowSchemaDrift: true,",
+						"EmpSrc1 keyGenerate(output(emp_key as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -282,13 +310,13 @@
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     stageInsert: true) ~> Emptgt1"
+						"     stageInsert: true) ~> SurgtKeyTransform"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/EmpSrc1')]",
-				"[concat(variables('factoryId'), '/datasets/SnowflakeTable2')]"
+				"[concat(variables('factoryId'), '/datasets/SurgtKeyTransf')]"
 			]
 		},
 		{
@@ -376,7 +404,7 @@
 								"parameters": {},
 								"datasetParameters": {
 									"EmpSrc1": {},
-									"Emptgt1": {}
+									"SurgtKeyTransform": {}
 								},
 								"linkedServiceParameters": {}
 							},
