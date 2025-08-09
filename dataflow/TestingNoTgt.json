@@ -1,20 +1,24 @@
 {
-	"name": "emp",
+	"name": "TestingNoTgt",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "SrcEmp",
+						"referenceName": "EmpSrc1",
 						"type": "DatasetReference"
 					},
-					"name": "EmpSrc"
+					"name": "EmpSrc1"
 				}
 			],
 			"sinks": [
 				{
-					"name": "TgtEmp"
+					"dataset": {
+						"referenceName": "EmpTgt1",
+						"type": "DatasetReference"
+					},
+					"name": "Emptgt1"
 				}
 			],
 			"transformations": [],
@@ -28,18 +32,24 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> EmpSrc",
-				"EmpSrc sink(allowSchemaDrift: true,",
+				"     format: 'table') ~> EmpSrc1",
+				"EmpSrc1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
 				"     mapColumn(",
 				"          EMPID,",
 				"          ENAME,",
+				"          SAL,",
 				"          LOCATION,",
 				"          DEPTNO",
-				"     ),",
-				"     format: 'table') ~> TgtEmp"
+				"     )) ~> Emptgt1"
 			]
 		}
 	}

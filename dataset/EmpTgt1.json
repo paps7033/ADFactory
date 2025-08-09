@@ -1,0 +1,16 @@
+{
+	"name": "EmpTgt1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SNOW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "assignments",
+			"table": "emptgtgt"
+		}
+	}
+}
